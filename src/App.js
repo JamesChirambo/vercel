@@ -14,7 +14,7 @@ function App() {
   }, []);
   return (
     <main>
-      <h1>Create React App! + Go API</h1>
+      <h1>Understanding Data Visualisation</h1>
       <h2>
         Deployed with{' '}
         <a
@@ -34,7 +34,7 @@ function App() {
         >
           This project
         </a>{' '}
-        was bootstrapped with{' '}
+        was created for learning purposes and was bootstrapped with{' '}
         <a href="https://facebook.github.io/create-react-app/">
           Create React App
         </a>{' '}
