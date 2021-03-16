@@ -36,7 +36,7 @@ function App() {
         </a>{' '}
         was bootstrapped with{' '}
         <a href="https://facebook.github.io/create-react-app/">
-          Create React App
+          Create React App!
         </a>{' '}
         and contains three directories, <code>/public</code> for static assets,{' '}
         <code>/src</code> for components and content, and <code>/api</code>{' '}
