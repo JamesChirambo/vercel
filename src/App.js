@@ -1,16 +1,51 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
   const [date, setDate] = useState(null);
+  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     async function getDate() {
-      const res = await fetch('/api/date');
-      const newDate = await res.text();
-      setDate(newDate);
+      setStatus('loading');
+      setError(null);
+
+      try {
+        const res = await fetch('/api/date', {
+          signal: controller.signal,
+          headers: { Accept: 'text/plain' },
+        });
+
+        if (!res.ok) {
+          const body = await res.text().catch(() => '');
+          throw new Error(
+            `Request failed: ${res.status} ${res.statusText}${
+              body ? ` — ${body}` : ''
+            }`
+          );
+        }
+
+        const newDate = (await res.text()).trim();
+        setDate(newDate);
+        setStatus('success');
+      } catch (err) {
+        // Ignore abort errors (e.g. component unmount / React strict mode double-invoke in dev)
+        if (err?.name === 'AbortError') return;
+
+        setStatus('error');
+        setError(err instanceof Error ? err.message : String(err));
+      }
     }
+
     getDate();
+
+    // Cleanup aborts fetch on unmount
+    return () => controller.abort();
   }, []);
 
   return (
@@ -50,10 +85,16 @@ function App() {
         contains a serverless <a href="https://golang.org/">Go</a> function.
       </p>
 
-      {/* Optional: show the fetched date */}
-      {date && <p>Server date: {date}</p>}
-
-      <br />
+      <section>
+        {status === 'idle' && <p>Ready.</p>}
+        {status === 'loading' && <p>Loading server date…</p>}
+        {status === 'success' && <p>Server date: {date}</p>}
+        {status === 'error' && (
+          <p role="alert" style={{ whiteSpace: 'pre-wrap' }}>
+            Could not load date: {error}
+          </p>
+        )}
+      </section>
     </main>
   );
 }
