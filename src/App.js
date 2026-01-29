@@ -1,9 +1,9 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
   const [date, setDate] = useState(null);
+
   useEffect(() => {
     async function getDate() {
       const res = await fetch('/api/date');
@@ -12,9 +12,11 @@ function App() {
     }
     getDate();
   }, []);
+
   return (
     <main>
       <h1>Understanding Data Visualisation</h1>
+
       <h2>
         Deployed with{' '}
         <a
@@ -26,6 +28,7 @@ function App() {
         </a>
         !
       </h2>
+
       <p>
         <a
           href="https://github.com/vercel/vercel/tree/master/examples/create-react-app"
@@ -35,15 +38,21 @@ function App() {
           This project
         </a>{' '}
         was created for learning purposes and was bootstrapped with{' '}
-        <a href="https://facebook.github.io/create-react-app/">
+        <a
+          href="https://facebook.github.io/create-react-app/"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
           Create React App
         </a>{' '}
         and contains three directories, <code>/public</code> for static assets,{' '}
-        <code>/src</code> for components and content, and <code>/api</code>{' '}
-        which contains a serverless <a href="https://golang.org/">Go</a> function.
-        </a>
-        .
+        <code>/src</code> for components and content, and <code>/api</code> which
+        contains a serverless <a href="https://golang.org/">Go</a> function.
       </p>
+
+      {/* Optional: show the fetched date */}
+      {date && <p>Server date: {date}</p>}
+
       <br />
     </main>
   );
